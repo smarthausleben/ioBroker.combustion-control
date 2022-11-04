@@ -1,0 +1,7 @@
+{
+	"combustion-control adapter settings": "Adapter settings for combustion-control",
+	"macAddress": "Bluetooth device MAC address (if empty, first found 'oControl' device will be used.)",
+	"deviceName": "Bluetooth device name (if empty, default name 'oControl' will be used.))",
+	"updateIntervall": "Update interval in seconds (minimu is 5 seconds. Default is 60 seconds.)",
+	"additionalMessages": "More logging messages"
+}

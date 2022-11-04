@@ -1,0 +1,26 @@
+{
+	"i18n": true,
+	"type": "panel",
+	"items": {
+		"macAddress": {
+			"type": "text",
+			"label": "Bluetooth device MAC address (if empty, first found 'oControl' device will be used.)",
+			"newLine": true
+		},
+		"deviceName": {
+			"type": "text",
+			"label": "Bluetooth device name (if empty, default name 'oControl' will be used.))",
+			"newLine": true
+		},
+		"updateIntervall": {
+			"type": "number",
+			"label": "Update interval in seconds (minimu is 5 seconds. Default is 60 seconds.)",
+			"newLine": true
+		},
+		"additionalMessages": {
+			"type": "checkbox",
+			"label": "More logging messages",
+			"newLine": true
+		}
+	}
+}
