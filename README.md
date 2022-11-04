@@ -94,7 +94,7 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
 -->
 
 ### **WORK IN PROGRESS**
-* (smarthausleben) initial release
+* (smarthausleben) getting started
 
 ## License
 MIT License

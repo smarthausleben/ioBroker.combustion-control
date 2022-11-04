@@ -8,6 +8,8 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
+const BluetoothSerialPort = require('bluetooth-serial-port');
+const btSerial = new BluetoothSerialPort.BluetoothSerialPort();
 // Load your modules here, e.g.:
 // const fs = require("fs");
 
