@@ -9,7 +9,8 @@
 const utils = require('@iobroker/adapter-core');
 
 const BluetoothSerialPort = require('bluetooth-serial-port');
-const { channel } = require('diagnostics_channel');
+
+//const { channel } = require('diagnostics_channel');
 
 let btSerialHandler;
 let btMACaddress;
