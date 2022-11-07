@@ -12,7 +12,8 @@ const BluetoothSerialPort = require('bluetooth-serial-port');
 
 //const { channel } = require('diagnostics_channel');
 
-let btSerialHandler;
+const btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
+
 let btMACaddress;
 let btName;
 // Load your modules here, e.g.:
