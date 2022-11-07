@@ -9,6 +9,7 @@
 const utils = require('@iobroker/adapter-core');
 
 const BluetoothSerialPort = require('bluetooth-serial-port');
+const { channel } = require('diagnostics_channel');
 
 let btSerialHandler;
 let btMACaddress;
@@ -53,10 +54,11 @@ class CombustionControl extends utils.Adapter {
 		this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 		//=====================================================================================
 		// Assign serial Blue-Tooth Events
-		this.btSerialHandler.on('finished', this.bltFinishedEvent);
-		this.btSerialHandler.on('found', this.bltFoundEvent);
-		this.btSerialHandler.on('failure', this.bltErrorEvent);
-		this.btSerialHandler.on('data', this.bltData);
+		this.btSerialHandler.on('finished', this.blt_finished_Event);
+		this.btSerialHandler.on('found', this.blt_found_Event);
+		this.btSerialHandler.on('failure', this.blt_error_Event);
+		this.btSerialHandler.on('data', this.blt_data_Event);
+		this.btSerialHandler.on('closed', this.blt_closed_Event);
 		//=====================================================================================
 
 		this.btSerialHandler.inquire();
@@ -64,35 +66,67 @@ class CombustionControl extends utils.Adapter {
 
 	}
 
-	bltData(buffer){}
+	blt_error_Event(err){
+		this.log.error('Blue tooth Error: ' + err);
+	}
 
-	bltFinishedEvent(address, name){}
+	/**
+	 * called if blue tooth connection is closed
+	 */
+	blt_closed_Event(){
+		this.log.warn('Blue tooth connection was closed');
+	}
 
-	bltFoundEvent(address, name){
+	/**
+	 * called if data is comming from blue tooth serial port
+	 * @param {} buffer // buffer containing received data
+	 */
+	blt_data_Event(buffer){
+		this.log.info('Blue tooth data received: ' + String(buffer));
+	}
+
+	blt_finished_Event(address, name){
+		this.log.warn('Blue toothe serial \'finished\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
+	}
+
+	blt_found_Event(address, name){
+		this.log.warn('Blue toothe serial \'found\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
 		if (name !== btName) {
+			this.log.error('Device name: \'' + String(name) + '\' is not the device we are looking for.');
 			// nicht der richtige controller
 			return;
 		}
 		if (btMACaddress !== '') {
 			if (btMACaddress !== address.toString()) {
+				this.log.error('Device MAC address: \'' + String(address) + '\' is not the one we are looking for.');
 				// falsche MAC Adresse
 				return;
 			}
 		}
+		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String>(address) + '\' Connecting to ...';
 		// Seriellen Port abfragen
-		btSerialHandler.findSerialPortChannel(address, this.foundBltChanel, this.bltErrorEvent);
+		btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
 	}
 
-	foundBltChanel(chanel){
-		// function foundBltChanel(chanel)
-		btSerialHandler.connect(btMACaddress, chanel, this.bltConnection, this.bltErrorEvent);
+	blt_channel_Found(channel){
+		this.log.info('Serial channel fond: \'' + String(channel) +'\' Connecting to ...');
+		// function foundBltChanel(channel)
+		btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
 	}
 
-	bltConnection(){
+	blt_serial_channel_Connected(){
+		this.log.info('Serial channel is connected');
 		this.setStateAsync('info.connection', true, true);
 	}
 
-	bltErrorEvent(err){}
+	blt_findSerialPort_error_Event(err){
+		// Device has no 'serial port channel'
+		this.log.error('Blue tooth find serial port Error: ' + err);
+	}
+
+	blt_serial_channel_connect_error_Event(err){
+		this.log.error('Blue tooth serial port connection error: ' + err);
+	}
 
 	/**
 	 * Is called when adapter shuts down - callback has to be called under any circumstances!
@@ -100,6 +134,9 @@ class CombustionControl extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
+			if(btSerialHandler.isOpen()){
+				btSerialHandler.close();
+			}
 			// Here you must clear all timeouts or intervals that may still be active
 			// clearTimeout(timeout1);
 			// clearTimeout(timeout2);
