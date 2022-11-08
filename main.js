@@ -63,6 +63,7 @@ class CombustionControl extends utils.Adapter {
 		this.btSerialHandler.on('closed', this.blt_closed_Event);
 		//=====================================================================================
 
+		this.log.warn('starting inquire');
 		this.btSerialHandler.inquire();
 
 
