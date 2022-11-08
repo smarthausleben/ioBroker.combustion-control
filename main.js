@@ -36,6 +36,7 @@ class CombustionControl extends utils.Adapter {
 		this.on('unload', this.onUnload.bind(this));
 	}
 
+
 	/**
 	 * Is called when databases are connected and adapter received configuration.
 	 */
@@ -114,14 +115,14 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String>(address) + '\' Connecting to ...';
 		// Seriellen Port abfragen
 		this.log.warn('[searcing for channel] hit');
-		btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
+		this.btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
 	}
 
 	blt_channel_Found(channel){
 		this.log.warn('[blt_channel_Found(channel)] hit');
 		this.log.info('Serial channel fond: \'' + String(channel) +'\' Connecting to ...');
 		// function foundBltChanel(channel)
-		btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
+		this.btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
 	}
 
 	blt_serial_channel_Connected(){
@@ -146,8 +147,8 @@ class CombustionControl extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
-			if(btSerialHandler.isOpen()){
-				btSerialHandler.close();
+			if(this.btSerialHandler.isOpen()){
+				this.btSerialHandler.close();
 			}
 			// Here you must clear all timeouts or intervals that may still be active
 			// clearTimeout(timeout1);
