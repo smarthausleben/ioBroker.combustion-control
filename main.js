@@ -8,11 +8,11 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-const BluetoothSerialPort = require('bluetooth-serial-port');
+const BluetoothSerialPort = require('node-bluetooth-serial-port');
 
 //const { channel } = require('diagnostics_channel');
 
-const btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
+const btSerialHandler = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
 
 let btMACaddress;
 let btName;
