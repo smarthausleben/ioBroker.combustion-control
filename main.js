@@ -15,6 +15,8 @@ const utils = require('@iobroker/adapter-core');
 const BluetoothSerialPort = require('node-bluetooth-serial-port');
 const btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 
+let myAdapter;
+
 let btMACaddress;
 let btName;
 // Load your modules here, e.g.:
@@ -54,6 +56,7 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('config updateIntervall: ' + this.config.updateIntervall);
 		this.log.info('config additionalMessages: ' + this.config.additionalMessages);
 
+
 		// create bluetooth event handler
 		// this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 		//=====================================================================================
@@ -65,16 +68,36 @@ class CombustionControl extends utils.Adapter {
 		btSerialHandler.on('closed', this.blt_closed_Event);
 		//=====================================================================================
 
-		try{
-			this.log.warn('starting inquire');
-			btSerialHandler.inquire();
-		}catch(err){
-			this.log.error('[btSerialHandler.inquire()] error: ' + err);
-		}
+		myAdapter = this;
+		this.main();
 
+		if (false) {
+			try {
+				this.log.warn('starting inquire');
+				btSerialHandler.inquire();
+			} catch (err) {
+				this.log.error('[btSerialHandler.inquire()] error: ' + err);
+			}
+		}
 	}
 
-	blt_error_Event(err){
+	main() {
+		const rfcomm = new BluetoothSerialPort.BluetoothSerialPort();
+
+		rfcomm.on('found', function (address, name) {
+			myAdapter.log.warn('found device:', name, 'with address:', address);
+		});
+
+		rfcomm.on('finished', function () {
+			myAdapter.log.warn('inquiry finished');
+		});
+
+		myAdapter.log.warn('start inquiry');
+		rfcomm.inquire();
+		myAdapter.log.warn('should be displayed before the end of inquiry');
+	}
+
+	blt_error_Event(err) {
 		this.log.warn('[blt_error_Event(err)] hit');
 		this.log.error('Blue tooth Error: ' + err);
 	}
@@ -82,7 +105,7 @@ class CombustionControl extends utils.Adapter {
 	/**
 	 * called if blue tooth connection is closed
 	 */
-	blt_closed_Event(){
+	blt_closed_Event() {
 		this.log.warn('[blt_closed_Event()] hit');
 		this.log.warn('Blue tooth connection was closed');
 	}
@@ -91,17 +114,17 @@ class CombustionControl extends utils.Adapter {
 	 * called if data is comming from blue tooth serial port
 	 * @param {} buffer // buffer containing received data
 	 */
-	blt_data_Event(buffer){
+	blt_data_Event(buffer) {
 		this.log.warn('[blt_data_Event(buffer)] hit');
 		this.log.info('Blue tooth data received: ' + String(buffer));
 	}
 
-	blt_finished_Event(address, name){
+	blt_finished_Event(address, name) {
 		this.log.warn('[blt_finished_Event(address, name)] hit');
 		this.log.warn('Blue toothe serial \'finished\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
 	}
 
-	blt_found_Event(address, name){
+	blt_found_Event(address, name) {
 		this.log.warn('[blt_found_Event(address, name)] hit');
 		this.log.warn('Blue toothe serial \'found\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
 		if (name !== btName) {
@@ -116,32 +139,32 @@ class CombustionControl extends utils.Adapter {
 				return;
 			}
 		}
-		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String>(address) + '\' Connecting to ...';
+		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...';
 		// Seriellen Port abfragen
 		this.log.warn('[searcing for channel] hit');
 		btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
 	}
 
-	blt_channel_Found(channel){
+	blt_channel_Found(channel) {
 		this.log.warn('[blt_channel_Found(channel)] hit');
-		this.log.info('Serial channel fond: \'' + String(channel) +'\' Connecting to ...');
+		this.log.info('Serial channel fond: \'' + String(channel) + '\' Connecting to ...');
 		// function foundBltChanel(channel)
 		btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
 	}
 
-	blt_serial_channel_Connected(){
+	blt_serial_channel_Connected() {
 		this.log.warn('[blt_serial_channel_Connected()] hit');
 		this.log.info('Serial channel is connected');
 		this.setStateAsync('info.connection', true, true);
 	}
 
-	blt_findSerialPort_error_Event(err){
+	blt_findSerialPort_error_Event(err) {
 		this.log.warn('[blt_findSerialPort_error_Event(err)] hit');
 		// Device has no 'serial port channel'
 		this.log.error('Blue tooth find serial port Error: ' + err);
 	}
 
-	blt_serial_channel_connect_error_Event(err){
+	blt_serial_channel_connect_error_Event(err) {
 		this.log.error('Blue tooth serial port connection error: ' + err);
 	}
 
@@ -151,7 +174,7 @@ class CombustionControl extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
-			if(btSerialHandler.isOpen()){
+			if (btSerialHandler.isOpen()) {
 				btSerialHandler.close();
 			}
 			// Here you must clear all timeouts or intervals that may still be active
