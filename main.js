@@ -57,21 +57,18 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('config additionalMessages: ' + this.config.additionalMessages);
 
 
-		// create bluetooth event handler
-		// this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
-		//=====================================================================================
-		// Assign serial Blue-Tooth Events
-		btSerialHandler.on('finished', this.blt_finished_Event);
-		btSerialHandler.on('found', this.blt_found_Event);
-		btSerialHandler.on('failure', this.blt_error_Event);
-		btSerialHandler.on('data', this.blt_data_Event);
-		btSerialHandler.on('closed', this.blt_closed_Event);
-		//=====================================================================================
-
-		myAdapter = this;
-		this.main();
-
 		if (false) {
+			// create bluetooth event handler
+			// this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
+			//=====================================================================================
+			// Assign serial Blue-Tooth Events
+			btSerialHandler.on('finished', this.blt_finished_Event);
+			btSerialHandler.on('found', this.blt_found_Event);
+			btSerialHandler.on('failure', this.blt_error_Event);
+			btSerialHandler.on('data', this.blt_data_Event);
+			btSerialHandler.on('closed', this.blt_closed_Event);
+			//=====================================================================================
+
 			try {
 				this.log.warn('starting inquire');
 				btSerialHandler.inquire();
@@ -79,9 +76,13 @@ class CombustionControl extends utils.Adapter {
 				this.log.error('[btSerialHandler.inquire()] error: ' + err);
 			}
 		}
-	}
+
+		myAdapter = this;
+		this.main();
+}
 
 	main() {
+		myAdapter.log.warn('main() hit');
 		const rfcomm = new BluetoothSerialPort.BluetoothSerialPort();
 
 		rfcomm.on('found', function (address, name) {
