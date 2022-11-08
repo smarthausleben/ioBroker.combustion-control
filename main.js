@@ -12,7 +12,8 @@ const utils = require('@iobroker/adapter-core');
 
 //const { channel } = require('diagnostics_channel');
 
-let btSerialHandler = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
+const BluetoothSerialPort = require('node-bluetooth-serial-port');
+const btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 
 let btMACaddress;
 let btName;
