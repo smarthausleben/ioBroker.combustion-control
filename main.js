@@ -70,6 +70,7 @@ class CombustionControl extends utils.Adapter {
 	}
 
 	blt_error_Event(err){
+		this.log.warn('[blt_error_Event(err)] hit');
 		this.log.error('Blue tooth Error: ' + err);
 	}
 
@@ -77,6 +78,7 @@ class CombustionControl extends utils.Adapter {
 	 * called if blue tooth connection is closed
 	 */
 	blt_closed_Event(){
+		this.log.warn('[blt_closed_Event()] hit');
 		this.log.warn('Blue tooth connection was closed');
 	}
 
@@ -85,14 +87,17 @@ class CombustionControl extends utils.Adapter {
 	 * @param {} buffer // buffer containing received data
 	 */
 	blt_data_Event(buffer){
+		this.log.warn('[blt_data_Event(buffer)] hit');
 		this.log.info('Blue tooth data received: ' + String(buffer));
 	}
 
 	blt_finished_Event(address, name){
+		this.log.warn('[blt_finished_Event(address, name)] hit');
 		this.log.warn('Blue toothe serial \'finished\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
 	}
 
 	blt_found_Event(address, name){
+		this.log.warn('[blt_found_Event(address, name)] hit');
 		this.log.warn('Blue toothe serial \'found\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
 		if (name !== btName) {
 			this.log.error('Device name: \'' + String(name) + '\' is not the device we are looking for.');
@@ -108,21 +113,25 @@ class CombustionControl extends utils.Adapter {
 		}
 		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String>(address) + '\' Connecting to ...';
 		// Seriellen Port abfragen
+		this.log.warn('[searcing for channel] hit');
 		btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
 	}
 
 	blt_channel_Found(channel){
+		this.log.warn('[blt_channel_Found(channel)] hit');
 		this.log.info('Serial channel fond: \'' + String(channel) +'\' Connecting to ...');
 		// function foundBltChanel(channel)
 		btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
 	}
 
 	blt_serial_channel_Connected(){
+		this.log.warn('[blt_serial_channel_Connected()] hit');
 		this.log.info('Serial channel is connected');
 		this.setStateAsync('info.connection', true, true);
 	}
 
 	blt_findSerialPort_error_Event(err){
+		this.log.warn('[blt_findSerialPort_error_Event(err)] hit');
 		// Device has no 'serial port channel'
 		this.log.error('Blue tooth find serial port Error: ' + err);
 	}
