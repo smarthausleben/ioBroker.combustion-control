@@ -12,8 +12,8 @@ const utils = require('@iobroker/adapter-core');
 
 const { channel } = require('diagnostics_channel');
 
-const BluetoothSerialPort = require('bluetooth-serial-port');
-const btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
+//const BluetoothSerialPort = require('node-bluetooth-serial-port');
+//const btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 
 let myAdapter;
 
@@ -79,11 +79,11 @@ class CombustionControl extends utils.Adapter {
 
 		myAdapter = this;
 		this.main();
-}
+	}
 
 	main() {
 		myAdapter.log.warn('main() hit');
-		const rfcomm = new BluetoothSerialPort.BluetoothSerialPort();
+		const rfcomm = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
 
 		rfcomm.on('found', function (address, name) {
 			myAdapter.log.warn('found device:', name, 'with address:', address);
