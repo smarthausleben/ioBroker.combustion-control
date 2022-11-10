@@ -12,7 +12,7 @@ const utils = require('@iobroker/adapter-core');
 
 const { channel } = require('diagnostics_channel');
 
-const btSerialHandler = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
+const btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 
 let myAdapter;
 
@@ -56,7 +56,7 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('config additionalMessages: ' + this.config.additionalMessages);
 
 
-		if (false) {
+		if (true) {
 			// create bluetooth event handler
 			// this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
 			//=====================================================================================
@@ -75,9 +75,10 @@ class CombustionControl extends utils.Adapter {
 				this.log.error('[btSerialHandler.inquire()] error: ' + err);
 			}
 		}
-
-		myAdapter = this;
-		this.main();
+		else{
+			myAdapter = this;
+			this.main();
+		}
 	}
 
 	main() {
