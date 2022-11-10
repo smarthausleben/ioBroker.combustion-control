@@ -77,35 +77,28 @@ class CombustionControl extends utils.Adapter {
 		}
 
 		myAdapter = this;
-
-		let done = false;
-		let failureCount = 0;
-		this.log.warn('starting try catch loop ...');
-		while (!done) {
-			try {
-				this.log.warn('this.main(); hit');
-				this.main();
-			} catch (err) {
-				this.log.error('[this.main()] Error: ' + err);
-				failureCount++;
-				if(failureCount>= 3){
-					done = true;
-				}
-			}
-		}
+		this.main();
 	}
 
 	main() {
 		myAdapter.log.warn('main() hit');
 		const rfcomm = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
 
-		rfcomm.on('found', function (address, name) {
-			myAdapter.log.warn('found device:', name, 'with address:', address);
-		});
+		try {
+			rfcomm.on('found', function (address, name) {
+				myAdapter.log.warn('found device:', name, 'with address:', address);
+			});
+		} catch (err) {
+			myAdapter.log.err('[\'found\', function (address, name)] ERROR: ' + err);
+		}
 
-		rfcomm.on('finished', function () {
-			myAdapter.log.warn('inquiry finished');
-		});
+		try {
+			rfcomm.on('finished', function () {
+				myAdapter.log.warn('inquiry finished');
+			});
+		} catch (err) {
+			myAdapter.log.err('[rfcomm.on(\'finished\', function ()] ERROR: ' + err);
+		}
 
 		myAdapter.log.warn('start inquiry');
 		rfcomm.inquire();
