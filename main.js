@@ -202,7 +202,7 @@ function blt_found_Event(address, name) {
 			return;
 		}
 	}
-	myAdapter.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...';
+	myAdapter.log.info('Correct device found. Name: \'' + String(name) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...');
 	// Seriellen Port abfragen
 	myAdapter.log.warn('[searcing for channel] hit');
 	btSerialHandler.findSerialPortChannel(address, blt_channel_Found, blt_findSerialPort_error_Event);
@@ -212,6 +212,8 @@ function blt_channel_Found(channel) {
 	myAdapter.log.warn('[blt_channel_Found(channel)] hit');
 	myAdapter.log.info('Serial channel fond: \'' + String(channel) + '\' Connecting to ...');
 	// function foundBltChanel(channel)
+	myAdapter.log.info('btMACaddress: ' + String(btMACaddress));
+	myAdapter.log.info('channel: ' + String(channel));
 	btSerialHandler.connect(btMACaddress, channel, blt_serial_channel_Connected, blt_serial_channel_connect_error_Event);
 }
 
