@@ -65,6 +65,7 @@ class CombustionControl extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
+			this.log.info('ceck if bluetooth connection is open');
 			if (btSerialHandler.isOpen()) {
 				this.log.info('closing bluetooth connection');
 				btSerialHandler.close();
