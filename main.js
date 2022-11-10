@@ -196,16 +196,21 @@ function blt_found_Event(address, name) {
 		return;
 	}
 	if (btMACaddress !== '') {
-		if (btMACaddress !== address.toString()) {
+		if (btMACaddress !== String(address)) {
 			myAdapter.log.error('Device MAC address: \'' + String(address) + '\' is not the one we are looking for.');
 			// falsche MAC Adresse
 			return;
 		}
 	}
-	myAdapter.log.info('Correct device found. Name: \'' + String(name) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...');
+	else{
+		// save MAC address
+		btMACaddress = address;
+	}
+
+	myAdapter.log.info('Correct device found. Name: \'' + String(name) + '\' MAC address: \'' + String > (btMACaddress) + '\' Connecting to ...');
 	// Seriellen Port abfragen
 	myAdapter.log.warn('[searcing for channel] hit');
-	btSerialHandler.findSerialPortChannel(address, blt_channel_Found, blt_findSerialPort_error_Event);
+	btSerialHandler.findSerialPortChannel(btMACaddress, blt_channel_Found, blt_findSerialPort_error_Event);
 }
 
 function blt_channel_Found(channel) {
