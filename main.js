@@ -77,7 +77,20 @@ class CombustionControl extends utils.Adapter {
 		}
 
 		myAdapter = this;
-		this.main();
+
+		let done = false;
+		let failureCount = 0;
+		while (!done) {
+			try {
+				this.main();
+			} catch (err) {
+				this.log.error('[this.main()] Error: ' + err);
+				failureCount++;
+				if(failureCount>= 3){
+					done = true;
+				}
+			}
+		}
 	}
 
 	main() {
