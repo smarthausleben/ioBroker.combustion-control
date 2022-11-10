@@ -143,6 +143,7 @@ if (require.main !== module) {
 	new CombustionControl();
 }
 
+
 function start() {
 	// create bluetooth event handler
 	btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
@@ -182,8 +183,8 @@ function blt_data_Event(buffer) {
 }
 
 function blt_finished_Event() {
-//	myAdapter.log.warn('[blt_finished_Event(address, name)] hit');
-//	myAdapter.log.warn('Blue toothe serial \'finished\' Event.');
+	myAdapter.log.warn('[blt_finished_Event(address, name)] hit');
+	myAdapter.log.warn('Blue toothe serial \'finished\' Event.');
 }
 
 function blt_found_Event(address, name) {
