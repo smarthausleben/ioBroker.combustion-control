@@ -66,6 +66,7 @@ class CombustionControl extends utils.Adapter {
 	onUnload(callback) {
 		try {
 			if (btSerialHandler.isOpen()) {
+				this.log.info('closing bluetooth connection');
 				btSerialHandler.close();
 			}
 			// Here you must clear all timeouts or intervals that may still be active
