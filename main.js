@@ -61,16 +61,16 @@ class CombustionControl extends utils.Adapter {
 			this.btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 			//=====================================================================================
 			// Assign serial Blue-Tooth Events
-			btSerialHandler.on('finished', this.blt_finished_Event);
-			btSerialHandler.on('found', this.blt_found_Event);
-			btSerialHandler.on('failure', this.blt_error_Event);
-			btSerialHandler.on('data', this.blt_data_Event);
-			btSerialHandler.on('closed', this.blt_closed_Event);
+			this.btSerialHandler.on('finished', this.blt_finished_Event);
+			this.btSerialHandler.on('found', this.blt_found_Event);
+			this.btSerialHandler.on('failure', this.blt_error_Event);
+			this.btSerialHandler.on('data', this.blt_data_Event);
+			this.btSerialHandler.on('closed', this.blt_closed_Event);
 			//=====================================================================================
 
 			try {
 				this.log.warn('starting inquire');
-				btSerialHandler.inquire();
+				this.btSerialHandler.inquire();
 			} catch (err) {
 				this.log.error('[btSerialHandler.inquire()] error: ' + err);
 			}
@@ -86,21 +86,13 @@ class CombustionControl extends utils.Adapter {
 			myAdapter.log.warn('main() hit');
 			const rfcomm = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 
-			try {
-				rfcomm.on('found', function (address, name) {
-					myAdapter.log.warn('found device:', name, 'with address:', address);
-				});
-			} catch (err) {
-				myAdapter.log.err('[\'found\', function (address, name)] ERROR: ' + err);
-			}
+			rfcomm.on('found', function (address, name) {
+				myAdapter.log.warn('found device:', name, 'with address:', address);
+			});
 
-			try {
-				rfcomm.on('finished', function () {
-					myAdapter.log.warn('inquiry finished');
-				});
-			} catch (err) {
-				myAdapter.log.err('[rfcomm.on(\'finished\', function ()] ERROR: ' + err);
-			}
+			rfcomm.on('finished', function () {
+				myAdapter.log.warn('inquiry finished');
+			});
 
 			myAdapter.log.warn('start inquiry');
 			rfcomm.inquire();
