@@ -128,9 +128,9 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('Blue tooth data received: ' + String(buffer));
 	}
 
-	blt_finished_Event(address, name) {
+	blt_finished_Event() {
 		this.log.warn('[blt_finished_Event(address, name)] hit');
-		this.log.warn('Blue toothe serial \'finished\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
+		this.log.warn('Blue toothe serial \'finished\' Event.');
 	}
 
 	blt_found_Event(address, name) {
