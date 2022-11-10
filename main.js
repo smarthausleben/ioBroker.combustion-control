@@ -55,120 +55,8 @@ class CombustionControl extends utils.Adapter {
 		this.log.info('config updateIntervall: ' + this.config.updateIntervall);
 		this.log.info('config additionalMessages: ' + this.config.additionalMessages);
 
-
-		if (true) {
-			// create bluetooth event handler
-			this.btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
-			//=====================================================================================
-			// Assign serial Blue-Tooth Events
-			this.btSerialHandler.on('finished', this.blt_finished_Event);
-			this.btSerialHandler.on('found', this.blt_found_Event);
-			this.btSerialHandler.on('failure', this.blt_error_Event);
-			this.btSerialHandler.on('data', this.blt_data_Event);
-			this.btSerialHandler.on('closed', this.blt_closed_Event);
-			//=====================================================================================
-
-			try {
-				this.log.warn('starting inquire');
-				this.btSerialHandler.inquire();
-			} catch (err) {
-				this.log.error('[btSerialHandler.inquire()] error: ' + err);
-			}
-		}
-		else{
-			myAdapter = this;
-			this.main();
-		}
-	}
-
-	main() {
-		if (true) {
-			myAdapter.log.warn('main() hit');
-			const rfcomm = new (require('bluetooth-serial-port').BluetoothSerialPort)();
-
-			rfcomm.on('found', function (address, name) {
-				myAdapter.log.warn('found device:', name, 'with address:', address);
-			});
-
-			rfcomm.on('finished', function () {
-				myAdapter.log.warn('inquiry finished');
-			});
-
-			myAdapter.log.warn('start inquiry');
-			rfcomm.inquire();
-			myAdapter.log.warn('should be displayed before the end of inquiry');
-		}
-	}
-
-	blt_error_Event(err) {
-		this.log.warn('[blt_error_Event(err)] hit');
-		this.log.error('Blue tooth Error: ' + err);
-	}
-
-	/**
-	 * called if blue tooth connection is closed
-	 */
-	blt_closed_Event() {
-		this.log.warn('[blt_closed_Event()] hit');
-		this.log.warn('Blue tooth connection was closed');
-	}
-
-	/**
-	 * called if data is comming from blue tooth serial port
-	 * @param {} buffer // buffer containing received data
-	 */
-	blt_data_Event(buffer) {
-		this.log.warn('[blt_data_Event(buffer)] hit');
-		this.log.info('Blue tooth data received: ' + String(buffer));
-	}
-
-	blt_finished_Event() {
-		this.log.warn('[blt_finished_Event(address, name)] hit');
-		this.log.warn('Blue toothe serial \'finished\' Event.');
-	}
-
-	blt_found_Event(address, name) {
-		this.log.warn('[blt_found_Event(address, name)] hit');
-		this.log.warn('Blue toothe serial \'found\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
-		if (name !== btName) {
-			this.log.error('Device name: \'' + String(name) + '\' is not the device we are looking for.');
-			// nicht der richtige controller
-			return;
-		}
-		if (btMACaddress !== '') {
-			if (btMACaddress !== address.toString()) {
-				this.log.error('Device MAC address: \'' + String(address) + '\' is not the one we are looking for.');
-				// falsche MAC Adresse
-				return;
-			}
-		}
-		this.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...';
-		// Seriellen Port abfragen
-		this.log.warn('[searcing for channel] hit');
-		btSerialHandler.findSerialPortChannel(address, this.blt_channel_Found, this.blt_findSerialPort_error_Event);
-	}
-
-	blt_channel_Found(channel) {
-		this.log.warn('[blt_channel_Found(channel)] hit');
-		this.log.info('Serial channel fond: \'' + String(channel) + '\' Connecting to ...');
-		// function foundBltChanel(channel)
-		btSerialHandler.connect(btMACaddress, channel, this.blt_serial_channel_Connected, this.blt_serial_channel_connect_error_Event);
-	}
-
-	blt_serial_channel_Connected() {
-		this.log.warn('[blt_serial_channel_Connected()] hit');
-		this.log.info('Serial channel is connected');
-		this.setStateAsync('info.connection', true, true);
-	}
-
-	blt_findSerialPort_error_Event(err) {
-		this.log.warn('[blt_findSerialPort_error_Event(err)] hit');
-		// Device has no 'serial port channel'
-		this.log.error('Blue tooth find serial port Error: ' + err);
-	}
-
-	blt_serial_channel_connect_error_Event(err) {
-		this.log.error('Blue tooth serial port connection error: ' + err);
+		myAdapter = this;
+		start();
 	}
 
 	/**
@@ -253,4 +141,91 @@ if (require.main !== module) {
 } else {
 	// otherwise start the instance directly
 	new CombustionControl();
+}
+
+function start() {
+	// create bluetooth event handler
+	btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
+	//=====================================================================================
+	// Assign serial Blue-Tooth Events
+	btSerialHandler.on('finished', blt_finished_Event);
+	btSerialHandler.on('found', blt_found_Event);
+	btSerialHandler.on('failure', blt_error_Event);
+	btSerialHandler.on('data', blt_data_Event);
+	btSerialHandler.on('closed', blt_closed_Event);
+	//=====================================================================================
+	myAdapter.log.warn('starting inquire');
+	btSerialHandler.inquire();
+
+}
+
+function blt_error_Event(err) {
+	myAdapter.log.warn('[blt_error_Event(err)] hit');
+	myAdapter.log.error('Blue tooth Error: ' + err);
+}
+
+/**
+ * called if blue tooth connection is closed
+ */
+function blt_closed_Event() {
+	myAdapter.log.warn('[blt_closed_Event()] hit');
+	myAdapter.log.warn('Blue tooth connection was closed');
+}
+
+/**
+ * called if data is comming from blue tooth serial port
+ * @param {} buffer // buffer containing received data
+ */
+function blt_data_Event(buffer) {
+	myAdapter.log.warn('[blt_data_Event(buffer)] hit');
+	myAdapter.log.info('Blue tooth data received: ' + String(buffer));
+}
+
+function blt_finished_Event() {
+//	myAdapter.log.warn('[blt_finished_Event(address, name)] hit');
+//	myAdapter.log.warn('Blue toothe serial \'finished\' Event.');
+}
+
+function blt_found_Event(address, name) {
+	myAdapter.log.warn('[blt_found_Event(address, name)] hit');
+	myAdapter.log.warn('Blue toothe serial \'found\' Event. Device adress: ' + String(address) + ' Device name: ' + String(name));
+	if (name !== btName) {
+		myAdapter.log.error('Device name: \'' + String(name) + '\' is not the device we are looking for.');
+		// nicht der richtige controller
+		return;
+	}
+	if (btMACaddress !== '') {
+		if (btMACaddress !== address.toString()) {
+			myAdapter.log.error('Device MAC address: \'' + String(address) + '\' is not the one we are looking for.');
+			// falsche MAC Adresse
+			return;
+		}
+	}
+	myAdapter.log.info('Correct device found. Name: \'' + String(name)) + '\' MAC address: \'' + String > (address) + '\' Connecting to ...';
+	// Seriellen Port abfragen
+	myAdapter.log.warn('[searcing for channel] hit');
+	btSerialHandler.findSerialPortChannel(address, blt_channel_Found, blt_findSerialPort_error_Event);
+}
+
+function blt_channel_Found(channel) {
+	myAdapter.log.warn('[blt_channel_Found(channel)] hit');
+	myAdapter.log.info('Serial channel fond: \'' + String(channel) + '\' Connecting to ...');
+	// function foundBltChanel(channel)
+	btSerialHandler.connect(btMACaddress, channel, blt_serial_channel_Connected, blt_serial_channel_connect_error_Event);
+}
+
+function blt_serial_channel_Connected() {
+	myAdapter.log.warn('[blt_serial_channel_Connected()] hit');
+	myAdapter.log.info('Serial channel is connected');
+	myAdapter.setStateAsync('info.connection', true, true);
+}
+
+function blt_findSerialPort_error_Event(err) {
+	myAdapter.log.warn('[blt_findSerialPort_error_Event(err)] hit');
+	// Device has no 'serial port channel'
+	myAdapter.log.error('Blue tooth find serial port Error: ' + err);
+}
+
+function blt_serial_channel_connect_error_Event(err) {
+	myAdapter.log.error('Blue tooth serial port connection error: ' + err);
 }
