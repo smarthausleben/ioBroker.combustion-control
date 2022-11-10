@@ -80,8 +80,10 @@ class CombustionControl extends utils.Adapter {
 
 		let done = false;
 		let failureCount = 0;
+		this.log.warn('starting try catch loop ...');
 		while (!done) {
 			try {
+				this.log.warn('this.main(); hit');
 				this.main();
 			} catch (err) {
 				this.log.error('[this.main()] Error: ' + err);
