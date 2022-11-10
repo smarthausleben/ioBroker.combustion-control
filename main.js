@@ -12,7 +12,7 @@ const utils = require('@iobroker/adapter-core');
 
 const { channel } = require('diagnostics_channel');
 
-const btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
+let btSerialHandler;
 
 let myAdapter;
 
@@ -58,7 +58,7 @@ class CombustionControl extends utils.Adapter {
 
 		if (true) {
 			// create bluetooth event handler
-			// this.btSerialHandler = new BluetoothSerialPort.BluetoothSerialPort();
+			this.btSerialHandler = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 			//=====================================================================================
 			// Assign serial Blue-Tooth Events
 			btSerialHandler.on('finished', this.blt_finished_Event);
@@ -82,28 +82,30 @@ class CombustionControl extends utils.Adapter {
 	}
 
 	main() {
-		myAdapter.log.warn('main() hit');
-		const rfcomm = new (require('bluetooth-serial-port').BluetoothSerialPort)();
+		if (true) {
+			myAdapter.log.warn('main() hit');
+			const rfcomm = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 
-		try {
-			rfcomm.on('found', function (address, name) {
-				myAdapter.log.warn('found device:', name, 'with address:', address);
-			});
-		} catch (err) {
-			myAdapter.log.err('[\'found\', function (address, name)] ERROR: ' + err);
+			try {
+				rfcomm.on('found', function (address, name) {
+					myAdapter.log.warn('found device:', name, 'with address:', address);
+				});
+			} catch (err) {
+				myAdapter.log.err('[\'found\', function (address, name)] ERROR: ' + err);
+			}
+
+			try {
+				rfcomm.on('finished', function () {
+					myAdapter.log.warn('inquiry finished');
+				});
+			} catch (err) {
+				myAdapter.log.err('[rfcomm.on(\'finished\', function ()] ERROR: ' + err);
+			}
+
+			myAdapter.log.warn('start inquiry');
+			rfcomm.inquire();
+			myAdapter.log.warn('should be displayed before the end of inquiry');
 		}
-
-		try {
-			rfcomm.on('finished', function () {
-				myAdapter.log.warn('inquiry finished');
-			});
-		} catch (err) {
-			myAdapter.log.err('[rfcomm.on(\'finished\', function ()] ERROR: ' + err);
-		}
-
-		myAdapter.log.warn('start inquiry');
-		rfcomm.inquire();
-		myAdapter.log.warn('should be displayed before the end of inquiry');
 	}
 
 	blt_error_Event(err) {
