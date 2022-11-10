@@ -82,7 +82,7 @@ class CombustionControl extends utils.Adapter {
 
 	main() {
 		myAdapter.log.warn('main() hit');
-		const rfcomm = new (require('node-bluetooth-serial-port').BluetoothSerialPort)();
+		const rfcomm = new (require('bluetooth-serial-port').BluetoothSerialPort)();
 
 		try {
 			rfcomm.on('found', function (address, name) {
