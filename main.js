@@ -52,8 +52,10 @@ class CombustionControl extends utils.Adapter {
 		// this.config:
 		btMACaddress = this.config.macAddress;
 		btName = this.config.deviceName;
-		this.log.info('config updateIntervall: ' + this.config.updateIntervall);
-		this.log.info('config additionalMessages: ' + this.config.additionalMessages);
+		if(btMACaddress !== '')
+		
+		this.log.info('Update Intervall: ' + String(this.config.updateIntervall) + ' seconds');
+		this.log.info('Show additional messages is set to: ' + String(this.config.additionalMessages));
 
 		myAdapter = this;
 		start();
