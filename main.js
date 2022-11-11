@@ -218,10 +218,11 @@ function blt_found_Event(address, name) {
 	else{
 		// no MAC address was defined, so we use the current one and save MAC address
 		btMACaddress = address;
+		myAdapter.log.warn('[setStateAsync(\'device.macaddress\'] hit. MAC-Adress: ' + String(btMACaddress));
+		myAdapter.setStateAsync('device.macaddress', { val: String(btMACaddress), ack: true });
 	}
 
 	myAdapter.log.info('Using device: Name: \'' + String(name) + '\' MAC address: \'' + String > (btMACaddress) + '\' requesting serial port channel ...');
-	myAdapter.setStateAsync('device.macaddress', { val: String(btMACaddress), ack: true });
 	// Seriellen Port abfragen
 	btSerialHandler.findSerialPortChannel(btMACaddress, blt_channel_Found, blt_findSerialPort_error_Event);
 }
