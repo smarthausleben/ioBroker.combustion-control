@@ -50,12 +50,17 @@ class CombustionControl extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		btMACaddress = this.config.macAddress;
-		btName = this.config.deviceName;
 
+		// get settings device name
+		btName = this.config.deviceName;
+		await this.setStateAsync('device.name', { val: String(btName), ack: true });
 		this.log.info('Device name: ' + String(btName));
 
+		// get settings MAC address
+		btMACaddress = this.config.macAddress;
 		if(String(btMACaddress) !== ''){
+			await this.setStateAsync('device.macaddress', { val: String(btMACaddress), ack: true });
+
 			this.log.info('Defined MAC address: ' + String(btMACaddress));
 		}else{
 			this.log.info('No MAC address is defined.');
