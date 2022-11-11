@@ -111,7 +111,18 @@
             "_id": "info",
             "type": "channel",
             "common": {
-                "name": "Information"
+                "name": {
+                    "en": "Information",
+                    "de": "Information",
+                    "ru": "Информация",
+                    "pt": "Em formação",
+                    "nl": "Informatie",
+                    "fr": "Information",
+                    "it": "Informazione",
+                    "es": "Información",
+                    "pl": "Informacja",
+                    "zh-cn": "信息"
+                }
             },
             "native": {}
         },
@@ -119,12 +130,289 @@
             "_id": "info.connection",
             "type": "state",
             "common": {
+                "name": {
+                    "en": "If communication with circuit works",
+                    "de": "Wenn die Kommunikation mit dem Gerät funktioniert",
+                    "ru": "Если связь с схемой работает",
+                    "pt": "Se a comunicação com o circuito funciona",
+                    "nl": "Als communicatie met circuit werkt",
+                    "fr": "Si la communication avec les circuits fonctionne",
+                    "it": "Se la comunicazione con i circuiti funziona",
+                    "es": "Si la comunicación con los circuitos funciona",
+                    "pl": "Jeśli komunikacja się z obwodem",
+                    "uk": "Якщо комунікація з контурними роботами",
+                    "zh-cn": "如果与渠道的通信工程"
+                },
                 "role": "indicator.connected",
-                "name": "Device or service connected",
                 "type": "boolean",
                 "read": true,
                 "write": false,
                 "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "device",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Device information",
+                    "de": "Informationen zum Gerät",
+                    "ru": "Информация об устройстве",
+                    "pt": "InformaÃ§Ãμes do dispositivo",
+                    "nl": "Vernietig informatie",
+                    "fr": "Information sur les dispositifs",
+                    "it": "Informazioni sul dispositivo",
+                    "es": "Información sobre dispositivos",
+                    "pl": "Data dostępu",
+                    "uk": "Інформація про пристрій",
+                    "zh-cn": "证人信息"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.name",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Device name",
+                    "de": "Bezeichnung des Geräts",
+                    "ru": "Наименование устройства",
+                    "pt": "Nome do dispositivo",
+                    "nl": "Devicenaam",
+                    "fr": "Nom du dispositif",
+                    "it": "Nome del dispositivo",
+                    "es": "Nombre del dispositivo",
+                    "pl": "Device name",
+                    "uk": "Назва пристрою",
+                    "zh-cn": "证人姓名"
+                },
+				"type": "string",
+				"unit": null,
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "device.macaddress",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "MAC address",
+                    "de": "MAC-Adresse",
+                    "ru": "MAC адрес",
+                    "pt": "Endereço MAC",
+                    "nl": "MAC adres",
+                    "fr": "Adresse MAC",
+                    "it": "Indirizzo MAC",
+                    "es": "Dirección del MAC",
+                    "pl": "Adres MAC",
+                    "uk": "Адреса MAC",
+                    "zh-cn": "MAC地址"
+                },
+				"type": "string",
+				"unit": null,
+				"role": "info.mac",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition",
+            "type": "channel",
+            "common": {
+                "name": {
+                    "en": "Device condition",
+                    "de": "Gerätezustand",
+                    "ru": "Условие устройства",
+                    "pt": "Condição de dispositivo",
+                    "nl": "Vernietigingsconditie",
+                    "fr": "État du dispositif",
+                    "it": "Stato del dispositivo",
+                    "es": "Condición del dispositivo",
+                    "pl": "Warunek zużycia",
+                    "uk": "Стан пристрою",
+                    "zh-cn": "丧失能力"
+                  }
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.combustion_phase",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Combustion phase",
+                    "de": "Verbrennungsphase",
+                    "ru": "Фаза горения",
+                    "pt": "Fase de combustão",
+                    "nl": "Combus fase",
+                    "fr": "Phase de combustion",
+                    "it": "Fase di combustione",
+                    "es": "Fase de combustión",
+                    "pl": "Faza popołudniowa",
+                    "uk": "Фаза відбору проб",
+                    "zh-cn": "燃烧阶段"
+                },
+				"type": "string",
+				"unit": null,
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.carbon_monoxide",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Carbon monoxide value",
+                    "de": "Kohlenstoffmonoxidwert",
+                    "ru": "Значение углеродного монооксида",
+                    "pt": "Valor do monóxido de carbono",
+                    "nl": "Carbon monoxide waarde",
+                    "fr": "Valeur monoxyde de carbone",
+                    "it": "Valore di monossido di carbonio",
+                    "es": "Valor de monóxido de carbono",
+                    "pl": "Wartość monoxide",
+                    "uk": "Значення оксиду вуглецю",
+                    "zh-cn": "氧化氮价值"
+                },
+				"type": "number",
+				"unit": null,
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.exhaust_gas_temperature",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Exhaust gas temperature",
+                    "de": "Abgastemperatur",
+                    "ru": "Температура выхлопного газа",
+                    "pt": "Temperatura do gás de escape",
+                    "nl": "Exhaust gastemperatuur",
+                    "fr": "Température du gaz d ' échappement",
+                    "it": "Temperatura gas di scarico",
+                    "es": "Temperatura de gas agotada",
+                    "pl": "Temperatura gazu ziemnego",
+                    "uk": "Температура вихлопних газів",
+                    "zh-cn": "1. 高温"
+                },
+				"type": "number",
+				"unit": "°C",
+				"role": "value.temperature",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.air_flap",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Air flap",
+                    "de": "Luftklappe",
+                    "ru": "Воздушный клапан",
+                    "pt": "Flap de ar",
+                    "nl": "Luchtflits",
+                    "fr": "Air flap",
+                    "it": "Pattinaggio aria",
+                    "es": "Aletas de aire",
+                    "pl": "Flap",
+                    "uk": "Повітряний клапан",
+                    "zh-cn": "空洞"
+                },
+				"type": "number",
+				"unit": "%",
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.mode",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Mode",
+                    "de": "Modus",
+                    "ru": "Режим",
+                    "pt": "Modo",
+                    "nl": "Mode",
+                    "fr": "Mode",
+                    "it": "Modalità",
+                    "es": "Modo",
+                    "pl": "Mode Mode Mode",
+                    "uk": "Режим",
+                    "zh-cn": "导 言"
+                },
+				"type": "number",
+				"unit": null,
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.combustion_duration",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Combustion duration",
+                    "de": "Dauer der Verbrennung",
+                    "ru": "Продолжительность горения",
+                    "pt": "Duração da combustão",
+                    "nl": "Combustion",
+                    "fr": "Durée de combustion",
+                    "it": "Durata della combustione",
+                    "es": "Duración de la combustión",
+                    "pl": "Czas trwania",
+                    "uk": "Термін придатності",
+                    "zh-cn": "B. 排 期"
+                },
+				"type": "string",
+				"unit": null,
+				"role": "state",
+				"read": true,
+				"write": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "condition.runtime",
+            "type": "state",
+            "common": {
+                "name": {
+                    "en": "Runtime",
+                    "de": "Laufzeit",
+                    "ru": "Продолжительность",
+                    "pt": "Tempo de execução",
+                    "nl": "Runtime",
+                    "fr": "Runtime",
+                    "it": "Tempo libero",
+                    "es": "Hora de correr",
+                    "pl": "Runtime",
+                    "uk": "Пробіг",
+                    "zh-cn": "Runtime"
+                  },
+				"type": "number",
+				"unit": "s",
+				"role": "state",
+				"read": true,
+				"write": false
             },
             "native": {}
         }
