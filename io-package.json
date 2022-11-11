@@ -215,7 +215,7 @@
                 },
 				"type": "string",
 				"unit": null,
-				"role": "state",
+				"role": "info.mac",
 				"read": true,
 				"write": false
             },
