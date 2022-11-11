@@ -217,6 +217,7 @@ function blt_found_Event(address, name) {
 	else{
 		// no MAC address was defined, so we use the current one and save MAC address
 		btMACaddress = address;
+		myAdapter.setStateAsync('device.macaddress', { val: String(btMACaddress), ack: true });
 	}
 
 	myAdapter.log.info('Using device: Name: \'' + String(name) + '\' MAC address: \'' + String > (btMACaddress) + '\' requesting serial port channel ...');
