@@ -14,6 +14,7 @@ const { channel } = require('diagnostics_channel');
 
 let btSerialHandler;
 
+
 let myAdapter;
 
 let btMACaddress;
